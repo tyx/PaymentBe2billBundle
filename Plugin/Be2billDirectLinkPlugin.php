@@ -68,6 +68,12 @@ class Be2billDirectLinkPlugin extends AbstractPlugin
             throw $exception;
         }
 
+        if ($response->getAlias()) {
+            $extendedData = new ExtendedData;
+            $extendedData->set('ALIAS', $response->getAlias());
+            $transaction->setExtendedData($extendedData);
+        }
+
         if (!$response->isSuccess()) {
             $exception = new FinancialException(sprintf('Deposit : transaction "%s" is not valid', $response->getTransactionId()));
             $exception->setFinancialTransaction($transaction);
